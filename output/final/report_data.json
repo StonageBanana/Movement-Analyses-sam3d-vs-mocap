@@ -1,0 +1,299 @@
+{
+  "representative_trials": [
+    "squats_1",
+    "walking_1",
+    "running_1"
+  ],
+  "bland_altman": {
+    "hip_flexion_left": {
+      "view1": {
+        "bias_deg": 5.681243987932968,
+        "sd_deg": 14.824298629111869,
+        "loa_lower_deg": -23.374381325126294,
+        "loa_upper_deg": 34.73686930099223,
+        "n_trials": 10,
+        "n_frames": 39272
+      },
+      "view2": {
+        "bias_deg": 7.389501172578613,
+        "sd_deg": 13.666714355708354,
+        "loa_lower_deg": -19.39725896460976,
+        "loa_upper_deg": 34.176261309766986,
+        "n_trials": 10,
+        "n_frames": 39424
+      },
+      "fused": {
+        "bias_deg": 6.75857988066896,
+        "sd_deg": 14.58266204016999,
+        "loa_lower_deg": -21.823437718064216,
+        "loa_upper_deg": 35.340597479402135,
+        "n_trials": 10,
+        "n_frames": 38890
+      }
+    },
+    "hip_flexion_right": {
+      "view1": {
+        "bias_deg": -40.79029035464032,
+        "sd_deg": 28.535720013092135,
+        "loa_lower_deg": -96.72030158030091,
+        "loa_upper_deg": 15.139720871020266,
+        "n_trials": 10,
+        "n_frames": 39272
+      },
+      "view2": {
+        "bias_deg": -39.913854544034045,
+        "sd_deg": 22.379660319291357,
+        "loa_lower_deg": -83.77798876984511,
+        "loa_upper_deg": 3.950279681777012,
+        "n_trials": 10,
+        "n_frames": 39424
+      },
+      "fused": {
+        "bias_deg": -41.09958719758574,
+        "sd_deg": 25.02699071708704,
+        "loa_lower_deg": -90.15248900307634,
+        "loa_upper_deg": 7.953314607904851,
+        "n_trials": 10,
+        "n_frames": 38890
+      }
+    },
+    "knee_flexion_left": {
+      "view1": {
+        "bias_deg": 22.16067921548808,
+        "sd_deg": 25.986161717557962,
+        "loa_lower_deg": -28.77219775092553,
+        "loa_upper_deg": 73.09355618190169,
+        "n_trials": 10,
+        "n_frames": 39246
+      },
+      "view2": {
+        "bias_deg": 20.35677800110477,
+        "sd_deg": 25.39222585809229,
+        "loa_lower_deg": -29.411984680756113,
+        "loa_upper_deg": 70.12554068296566,
+        "n_trials": 10,
+        "n_frames": 39398
+      },
+      "fused": {
+        "bias_deg": 21.337424629838367,
+        "sd_deg": 25.74931421415367,
+        "loa_lower_deg": -29.13123122990283,
+        "loa_upper_deg": 71.80608048957956,
+        "n_trials": 10,
+        "n_frames": 38864
+      }
+    },
+    "knee_flexion_right": {
+      "view1": {
+        "bias_deg": 67.77577824906004,
+        "sd_deg": 39.29596385715287,
+        "loa_lower_deg": -9.244310910959584,
+        "loa_upper_deg": 144.79586740907968,
+        "n_trials": 10,
+        "n_frames": 39272
+      },
+      "view2": {
+        "bias_deg": 70.70764309015168,
+        "sd_deg": 34.38790451318458,
+        "loa_lower_deg": 3.3073502443099017,
+        "loa_upper_deg": 138.10793593599345,
+        "n_trials": 10,
+        "n_frames": 39424
+      },
+      "fused": {
+        "bias_deg": 67.85365063357453,
+        "sd_deg": 40.28928007251475,
+        "loa_lower_deg": -11.113338308554376,
+        "loa_upper_deg": 146.82063957570344,
+        "n_trials": 10,
+        "n_frames": 38890
+      }
+    },
+    "ankle_flexion_left": {
+      "view1": {
+        "bias_deg": -80.6595853205315,
+        "sd_deg": 130.53704470903855,
+        "loa_lower_deg": -336.512192950247,
+        "loa_upper_deg": 175.19302230918404,
+        "n_trials": 10,
+        "n_frames": 39246
+      },
+      "view2": {
+        "bias_deg": -82.48081658989571,
+        "sd_deg": 128.03272734108486,
+        "loa_lower_deg": -333.42496217842205,
+        "loa_upper_deg": 168.46332899863063,
+        "n_trials": 10,
+        "n_frames": 39398
+      },
+      "fused": {
+        "bias_deg": -83.27207923269748,
+        "sd_deg": 128.93594309336447,
+        "loa_lower_deg": -335.98652769569185,
+        "loa_upper_deg": 169.4423692302969,
+        "n_trials": 10,
+        "n_frames": 38864
+      }
+    },
+    "ankle_flexion_right": {
+      "view1": {
+        "bias_deg": 34.987169877856516,
+        "sd_deg": 149.7584911612982,
+        "loa_lower_deg": -258.53947279828793,
+        "loa_upper_deg": 328.51381255400094,
+        "n_trials": 1,
+        "n_frames": 6100
+      },
+      "view2": {
+        "bias_deg": 41.876713560305504,
+        "sd_deg": 147.0295712684625,
+        "loa_lower_deg": -246.30124612588094,
+        "loa_upper_deg": 330.054673246492,
+        "n_trials": 1,
+        "n_frames": 6100
+      },
+      "fused": {
+        "bias_deg": 40.58713226453403,
+        "sd_deg": 148.17407194237038,
+        "loa_lower_deg": -249.83404874251187,
+        "loa_upper_deg": 331.00831327157994,
+        "n_trials": 1,
+        "n_frames": 5883
+      }
+    }
+  },
+  "mpjpe_overall": {
+    "view_avg": 124.68964669369112,
+    "fused": 109.23748347559899
+  },
+  "pa_mpjpe_overall": {
+    "view_avg": 106.58718870750724,
+    "fused": 97.03691696882129
+  },
+  "mpjpe_by_category": {
+    "dance_move": {
+      "view1": 129.43074677739784,
+      "view2": 96.17844436627702,
+      "fused": 105.47259316255285
+    },
+    "feet_movements": {
+      "view1": 110.51414216540651,
+      "view2": 106.3684068409361,
+      "fused": 99.31445513077207
+    },
+    "random": {
+      "view1": 104.93346878178029,
+      "view2": 113.2679959295059,
+      "fused": 95.37960488369676
+    },
+    "running": {
+      "view1": 168.02015694247893,
+      "view2": 165.36472097391908,
+      "fused": 162.2447989652853
+    },
+    "squats": {
+      "view1": 106.43551370292934,
+      "view2": 113.51710525727765,
+      "fused": 89.30514957921352
+    },
+    "walking": {
+      "view1": 102.74582897950783,
+      "view2": 139.39574944026134,
+      "fused": 96.36942816332355
+    }
+  },
+  "mpjpe_by_joint": {
+    "pelvis": {
+      "view_avg": 103.29551177920283,
+      "fused": 94.56557522476166
+    },
+    "neck": {
+      "view_avg": 57.05726900214503,
+      "fused": 51.25583899931833
+    },
+    "head": {
+      "view_avg": 104.79329484356427,
+      "fused": 94.09309032987534
+    },
+    "hip_left": {
+      "view_avg": 138.71616586925182,
+      "fused": 135.37321013732566
+    },
+    "hip_right": {
+      "view_avg": 223.44090371702586,
+      "fused": 221.32661751752576
+    },
+    "knee_left": {
+      "view_avg": 99.57138176198785,
+      "fused": 87.13865088309683
+    },
+    "knee_right": {
+      "view_avg": 107.62460119682018,
+      "fused": 95.5472903050574
+    },
+    "ankle_left": {
+      "view_avg": 144.70505251213547,
+      "fused": 119.10841957998555
+    },
+    "ankle_right": {
+      "view_avg": 139.29964844863062,
+      "fused": 111.93582087740404
+    },
+    "heel_left": {
+      "view_avg": 137.70867819469441,
+      "fused": 110.08209372040467
+    },
+    "heel_right": {
+      "view_avg": 169.18178644175848,
+      "fused": 144.58631064569792
+    },
+    "toe_left": {
+      "view_avg": 152.63981602888603,
+      "fused": 124.79027592273886
+    },
+    "toe_right": {
+      "view_avg": 183.52090072882706,
+      "fused": 163.58725424052315
+    },
+    "shoulder_left": {
+      "view_avg": 73.82452093228785,
+      "fused": 59.75267332915805
+    },
+    "shoulder_right": {
+      "view_avg": 64.43590092822073,
+      "fused": 51.95852691760233
+    },
+    "elbow_left": {
+      "view_avg": 112.79336759419911,
+      "fused": 102.21796552015664
+    },
+    "elbow_right": {
+      "view_avg": 108.65406224101409,
+      "fused": 98.69059042547141
+    },
+    "wrist_left": {
+      "view_avg": 118.76892947476259,
+      "fused": 99.02105300766806
+    },
+    "wrist_right": {
+      "view_avg": 129.07149548471583,
+      "fused": 110.48092845260923
+    }
+  },
+  "phase7_headline": {
+    "n_trials": 10,
+    "n_trials_fused_beats_best_view_mpjpe": 8,
+    "n_trials_fused_beats_best_view_pa_mpjpe": 6,
+    "mean_fused_vs_best_view_mpjpe_pct": 4.51222536297385,
+    "mean_fused_vs_best_view_pa_mpjpe_pct": -0.07462811581151829,
+    "mean_best_view_mpjpe_mm": 114.77598263369616,
+    "mean_fused_mpjpe_mm": 109.23748347559899,
+    "mean_best_view_pa_mpjpe_mm": 97.42142142913389,
+    "mean_fused_pa_mpjpe_mm": 97.03691696882129
+  },
+  "phase7_confidence_weighting_premise_test": {
+    "n_pairs": 190,
+    "pearson_r": -0.14416498476825274,
+    "p_value": 0.04720651921052009
+  }
+}

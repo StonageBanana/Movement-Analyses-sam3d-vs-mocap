@@ -1,5 +1,6 @@
 .venv/
 third_party/sam-3d-body/
-output/
+output/sam3d_run.log
+output/smoke_test/
 __pycache__/
 *.pyc
