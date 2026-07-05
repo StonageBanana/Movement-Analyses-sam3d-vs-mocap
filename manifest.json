@@ -1,0 +1,314 @@
+{
+  "trials": {
+    "dance_move_1": {
+      "trial": "dance_move_1",
+      "mocap": {
+        "trc": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Measurement\\dance_move_1.trc",
+        "c3d": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Measurement\\dance_move_1.c3d",
+        "csv": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Measurement\\dance_move_1.csv",
+        "mot": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Measurement\\dance_move_1.mot",
+        "xcp": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Measurement\\dance_move_1.xcp"
+      },
+      "views": {
+        "view1": {
+          "path": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Segmented Videos _1\\Dance_move_1.mov",
+          "fps": 30.0,
+          "frame_count": 270,
+          "duration_sec": 9.0,
+          "width": 1080,
+          "height": 1920
+        },
+        "view2": {
+          "path": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Segmented Videos_2\\Dance_move_1.mov",
+          "fps": 30.0,
+          "frame_count": 270,
+          "duration_sec": 9.0,
+          "width": 1080,
+          "height": 1920
+        }
+      },
+      "paired": true
+    },
+    "feet_movements_1": {
+      "trial": "feet_movements_1",
+      "mocap": {
+        "trc": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Measurement\\feet_movements_1.trc",
+        "c3d": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Measurement\\feet_movements_1.c3d",
+        "csv": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Measurement\\feet_movements_1.csv",
+        "mot": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Measurement\\feet_movements_1.mot",
+        "xcp": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Measurement\\feet_movements_1.xcp"
+      },
+      "views": {
+        "view1": {
+          "path": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Segmented Videos _1\\Feet_movements_1.mov",
+          "fps": 30.0,
+          "frame_count": 553,
+          "duration_sec": 18.43,
+          "width": 1080,
+          "height": 1920
+        },
+        "view2": {
+          "path": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Segmented Videos_2\\Feet_movements_1.mov",
+          "fps": 30.0,
+          "frame_count": 553,
+          "duration_sec": 18.43,
+          "width": 1080,
+          "height": 1920
+        }
+      },
+      "paired": true
+    },
+    "random_1": {
+      "trial": "random_1",
+      "mocap": {
+        "trc": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Measurement\\random_1.trc",
+        "c3d": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Measurement\\random_1.c3d",
+        "csv": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Measurement\\random_1.csv",
+        "mot": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Measurement\\random_1.mot",
+        "xcp": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Measurement\\random_1.xcp"
+      },
+      "views": {
+        "view1": {
+          "path": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Segmented Videos _1\\Random_1.mov",
+          "fps": 30.0,
+          "frame_count": 582,
+          "duration_sec": 19.4,
+          "width": 1080,
+          "height": 1920
+        },
+        "view2": {
+          "path": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Segmented Videos_2\\Random_1.mov",
+          "fps": 30.0,
+          "frame_count": 582,
+          "duration_sec": 19.4,
+          "width": 1080,
+          "height": 1920
+        }
+      },
+      "paired": true
+    },
+    "running_1": {
+      "trial": "running_1",
+      "mocap": {
+        "trc": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Measurement\\running_1.trc",
+        "c3d": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Measurement\\running_1.c3d",
+        "csv": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Measurement\\running_1.csv",
+        "mot": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Measurement\\running_1.mot",
+        "xcp": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Measurement\\running_1.xcp"
+      },
+      "views": {
+        "view1": {
+          "path": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Segmented Videos _1\\Running_1.mov",
+          "fps": 30.0,
+          "frame_count": 2099,
+          "duration_sec": 69.97,
+          "width": 1080,
+          "height": 1920
+        },
+        "view2": {
+          "path": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Segmented Videos_2\\Running_1.mov",
+          "fps": 30.0,
+          "frame_count": 2100,
+          "duration_sec": 70.0,
+          "width": 1080,
+          "height": 1920
+        }
+      },
+      "paired": true
+    },
+    "running_2": {
+      "trial": "running_2",
+      "mocap": {
+        "trc": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Measurement\\running_2.trc",
+        "c3d": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Measurement\\running_2.c3d",
+        "csv": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Measurement\\running_2.csv",
+        "mot": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Measurement\\running_2.mot",
+        "xcp": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Measurement\\running_2.xcp"
+      },
+      "views": {
+        "view1": {
+          "path": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Segmented Videos _1\\Running_2.mov",
+          "fps": 30.0,
+          "frame_count": 2090,
+          "duration_sec": 69.67,
+          "width": 1080,
+          "height": 1920
+        },
+        "view2": {
+          "path": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Segmented Videos_2\\Running_2.mov",
+          "fps": 30.0,
+          "frame_count": 2090,
+          "duration_sec": 69.67,
+          "width": 1080,
+          "height": 1920
+        }
+      },
+      "paired": true
+    },
+    "squats_1": {
+      "trial": "squats_1",
+      "mocap": {
+        "trc": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Measurement\\squats_1.trc",
+        "c3d": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Measurement\\squats_1.c3d",
+        "csv": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Measurement\\squats_1.csv",
+        "mot": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Measurement\\squats_1.mot",
+        "xcp": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Measurement\\squats_1.xcp"
+      },
+      "views": {
+        "view1": {
+          "path": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Segmented Videos _1\\Squats_1.mov",
+          "fps": 30.0,
+          "frame_count": 501,
+          "duration_sec": 16.7,
+          "width": 1080,
+          "height": 1920
+        },
+        "view2": {
+          "path": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Segmented Videos_2\\Squats_1.mov",
+          "fps": 30.0,
+          "frame_count": 501,
+          "duration_sec": 16.7,
+          "width": 1080,
+          "height": 1920
+        }
+      },
+      "paired": true
+    },
+    "squats_2": {
+      "trial": "squats_2",
+      "mocap": {
+        "trc": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Measurement\\squats_2.trc",
+        "c3d": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Measurement\\squats_2.c3d",
+        "csv": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Measurement\\squats_2.csv",
+        "mot": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Measurement\\squats_2.mot",
+        "xcp": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Measurement\\squats_2.xcp"
+      },
+      "views": {
+        "view1": {
+          "path": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Segmented Videos _1\\Squats_2.mov",
+          "fps": 30.0,
+          "frame_count": 467,
+          "duration_sec": 15.57,
+          "width": 1080,
+          "height": 1920
+        },
+        "view2": {
+          "path": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Segmented Videos_2\\Squats_2.mov",
+          "fps": 30.0,
+          "frame_count": 467,
+          "duration_sec": 15.57,
+          "width": 1080,
+          "height": 1920
+        }
+      },
+      "paired": true
+    },
+    "static": {
+      "trial": "static",
+      "mocap": {
+        "trc": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Measurement\\static.trc",
+        "c3d": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Measurement\\static.c3d",
+        "csv": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Measurement\\static.csv",
+        "mot": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Measurement\\static.mot",
+        "xcp": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Measurement\\static.xcp"
+      },
+      "views": {},
+      "paired": false
+    },
+    "walking_1": {
+      "trial": "walking_1",
+      "mocap": {
+        "trc": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Measurement\\walking_1.trc",
+        "c3d": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Measurement\\walking_1.c3d",
+        "csv": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Measurement\\walking_1.csv",
+        "mot": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Measurement\\walking_1.mot",
+        "xcp": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Measurement\\walking_1.xcp"
+      },
+      "views": {
+        "view1": {
+          "path": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Segmented Videos _1\\Walking_1.mov",
+          "fps": 30.0,
+          "frame_count": 1834,
+          "duration_sec": 61.13,
+          "width": 1080,
+          "height": 1920
+        },
+        "view2": {
+          "path": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Segmented Videos_2\\Walking_1.mov",
+          "fps": 30.0,
+          "frame_count": 1853,
+          "duration_sec": 61.77,
+          "width": 1080,
+          "height": 1920
+        }
+      },
+      "paired": true
+    },
+    "walking_2": {
+      "trial": "walking_2",
+      "mocap": {
+        "trc": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Measurement\\walking_2.trc",
+        "c3d": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Measurement\\walking_2.c3d",
+        "csv": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Measurement\\walking_2.csv",
+        "mot": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Measurement\\walking_2.mot",
+        "xcp": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Measurement\\walking_2.xcp"
+      },
+      "views": {
+        "view1": {
+          "path": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Segmented Videos _1\\Walking_2.mov",
+          "fps": 30.0,
+          "frame_count": 1893,
+          "duration_sec": 63.1,
+          "width": 1080,
+          "height": 1920
+        },
+        "view2": {
+          "path": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Segmented Videos_2\\Walking_2.mov",
+          "fps": 30.0,
+          "frame_count": 1895,
+          "duration_sec": 63.17,
+          "width": 1080,
+          "height": 1920
+        }
+      },
+      "paired": true
+    },
+    "walking_3": {
+      "trial": "walking_3",
+      "mocap": {
+        "trc": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Measurement\\walking_3.trc",
+        "c3d": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Measurement\\walking_3.c3d",
+        "csv": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Measurement\\walking_3.csv",
+        "mot": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Measurement\\walking_3.mot",
+        "xcp": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Measurement\\walking_3.xcp"
+      },
+      "views": {
+        "view1": {
+          "path": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Segmented Videos _1\\Walking_3.mov",
+          "fps": 30.0,
+          "frame_count": 2059,
+          "duration_sec": 68.63,
+          "width": 1080,
+          "height": 1920
+        },
+        "view2": {
+          "path": "D:\\Kushal 2020\\FAU MTech\\SEMESTER 4\\seminar-rma\\FAU-Seminar-Research-in-Movement-Analysis\\Segmented Videos_2\\Walking_3.mov",
+          "fps": 30.0,
+          "frame_count": 2058,
+          "duration_sec": 68.6,
+          "width": 1080,
+          "height": 1920
+        }
+      },
+      "paired": true
+    }
+  },
+  "summary": {
+    "total_trials": 11,
+    "paired_trials": 10,
+    "unpaired_trials": [
+      "static"
+    ],
+    "missing_files": []
+  }
+}

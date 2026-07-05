@@ -1,0 +1,16 @@
+# Core Phase 0/1 dependencies (mocap parsing, video probing, manifest, stats/plots)
+numpy
+pandas
+scipy
+matplotlib
+opencv-python
+ezc3d
+tqdm
+huggingface_hub
+
+# Phase 2 (SAM 3D Body inference) will add torch + the model repo's own
+# requirements once we set that up. On this machine an NVIDIA GTX 1650 Ti
+# (4GB VRAM, driver 517.00) was detected, so torch should be installed with
+# a matching CUDA build, e.g.:
+#   pip install torch --index-url https://download.pytorch.org/whl/cu118
+# Verify with: python -c "import torch; print(torch.cuda.is_available())"
