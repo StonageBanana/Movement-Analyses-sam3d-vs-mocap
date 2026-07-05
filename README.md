@@ -12,8 +12,14 @@ two views together with **zero calibration or ground-truth involved in the
 fusion itself**, and then scores the fused result the same way — arriving at a
 data-driven, literature-grounded verdict.
 
-**Read [Phase 7's synthesis](output/synthesis/phase7_synthesis.json) for the
-actual numbers, or skip straight to [the verdict](#the-verdict) below.**
+**New here? Start with [`notebooks/project_walkthrough.ipynb`](notebooks/project_walkthrough.ipynb)** —
+a single executed notebook telling the whole project as a narrative, phase by
+phase, importing the real code and showing the real outputs (including the
+three real bugs found along the way, reproduced live on real data). GitHub
+renders it directly, no setup needed to read it.
+
+Otherwise, read [Phase 7's synthesis](output/synthesis/phase7_synthesis.json) for the
+actual numbers, or skip straight to [the verdict](#the-verdict) below.
 
 ## What's in this repo, and what isn't
 
@@ -52,6 +58,8 @@ analysis/
     audit_all.py           # full regression check across every phase
   output/                  # every phase's generated artifacts (see table below)
   third_party/sam-3d-body/ # cloned facebookresearch/sam-3d-body (gitignored, see setup)
+  notebooks/
+    project_walkthrough.ipynb  # the full narrative walkthrough -- start here
 ```
 
 ## The phases
