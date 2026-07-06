@@ -110,6 +110,55 @@ def cross_correlate_lag(time_a, signal_a, time_b, signal_b, dt=None, max_lag_sec
     return best_lag
 
 
+def cross_correlate_lag_candidates(time_a, signal_a, time_b, signal_b, dt=None, max_lag_seconds=3.0,
+                                    n_candidates=5, min_peak_separation=0.4):
+    """Same broadband cross-correlation as cross_correlate_lag, but returns
+    the top `n_candidates` local correlation peaks within the search window
+    -- (lag, relative_strength) pairs, strength relative to the strongest
+    peak, sorted strongest-first -- instead of just the single strongest one.
+
+    Why this exists: the single strongest peak can still be a "cycle-slip"
+    even after the mitigations in cross_correlate_lag's docstring, for
+    long, highly periodic trials (walking/running over 60+ seconds gives
+    the noise many chances to make some wrong-by-N-strides peak the global
+    max). Confirmed on real data in this project: for three trial/views,
+    the true lag -- verified by which candidate minimizes the actual
+    downstream spatial-alignment residual -- was only the 3rd or 4th
+    strongest peak, not the 1st or 2nd (i.e. not even what the
+    cross_correlate_lag's own ambiguous-lag warning would have surfaced as
+    the "competing" candidate). Callers should therefore try each of these
+    candidates against the real downstream fit and keep whichever gives the
+    lowest residual, rather than trusting correlation strength alone."""
+    from scipy.signal import find_peaks
+
+    t0 = max(time_a[0], time_b[0])
+    t1 = min(time_a[-1], time_b[-1])
+    if dt is None:
+        dt = min(np.median(np.diff(time_a)), np.median(np.diff(time_b)))
+    grid = np.arange(t0, t1, dt)
+
+    valid_a = ~np.isnan(signal_a)
+    valid_b = ~np.isnan(signal_b)
+    a = np.interp(grid, time_a[valid_a], signal_a[valid_a])
+    b = np.interp(grid, time_b[valid_b], signal_b[valid_b])
+    a = (a - a.mean()) / (a.std() + 1e-8)
+    b = (b - b.mean()) / (b.std() + 1e-8)
+
+    corr = np.correlate(a, b, mode="full")
+    lags = np.arange(-len(b) + 1, len(a)) * dt
+
+    window = np.abs(lags) <= max_lag_seconds
+    corr_win, lags_win = corr[window], lags[window]
+
+    peak_idx, _ = find_peaks(corr_win, distance=max(1, int(min_peak_separation / dt)))
+    if len(peak_idx) == 0:
+        peak_idx = np.array([np.argmax(corr_win)])
+    ranked = sorted(zip(corr_win[peak_idx], lags_win[peak_idx]), key=lambda cl: -cl[0])
+    top = ranked[:n_candidates]
+    max_corr = top[0][0]
+    return [(float(lag), float(c / max_corr)) for c, lag in top]
+
+
 def resample_joints_to_times(src_times, joints: dict, dst_times) -> dict:
     """Linearly interpolate every (F,3) array in `joints` from src_times
     onto dst_times. Frames of dst_times outside src_times' range are

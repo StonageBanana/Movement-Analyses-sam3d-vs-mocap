@@ -43,7 +43,7 @@ import numpy as np
 from scipy.signal import savgol_filter
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from align import umeyama_alignment, apply_similarity, cross_correlate_lag, resample_joints_to_times
+from align import umeyama_alignment, apply_similarity, cross_correlate_lag_candidates, resample_joints_to_times
 from joint_mapping import CANONICAL_JOINTS, sam3d_canonical_joints, detect_vertical_axis_generic
 
 SAM3D_REPO = Path(__file__).resolve().parent.parent / "third_party" / "sam-3d-body"
@@ -142,15 +142,11 @@ def gpa_two_shapes(x1: np.ndarray, x2: np.ndarray, max_iter: int = 10, tol: floa
     return x1_aligned, x2_aligned, converged
 
 
-def fuse_trial(trial: str, fps1: float, fps2: float) -> dict:
-    j1, t1, up1 = load_view_joints(trial, "view1", fps1)
-    j2, t2, up2 = load_view_joints(trial, "view2", fps2)
-
-    v1 = vertical_component(j1, up1)
-    v2 = vertical_component(j2, up2)
-    lag = cross_correlate_lag(t1, v1, t2, v2)
+def _rigid_fit_at_lag(lag: float, j1: dict, t1, j2: dict, t2):
+    """Whole-trial rigid+scale fit (view2 -> view1) for one candidate lag --
+    used to score candidates before committing to the expensive per-frame
+    GPA loop for just the winner."""
     t2_shifted = t2 + lag
-
     j2_resampled, valid_mask = resample_joints_to_times(t2_shifted, j2, t1)
     j1_overlap = {name: arr[valid_mask] for name, arr in j1.items()}
     time_overlap = t1[valid_mask]
@@ -159,7 +155,42 @@ def fuse_trial(trial: str, fps1: float, fps2: float) -> dict:
     dst_pts = np.concatenate([j1_overlap[j] for j in CANONICAL_JOINTS], axis=0)
     fit_mask = ~np.isnan(src_pts).any(axis=-1) & ~np.isnan(dst_pts).any(axis=-1)
     R, scale, t = umeyama_alignment(src_pts[fit_mask], dst_pts[fit_mask])
+    fitted = apply_similarity(src_pts[fit_mask], R, scale, t)
+    mean_residual = float(np.mean(np.linalg.norm(fitted - dst_pts[fit_mask], axis=-1)))
+
     j2_aligned = {name: apply_similarity(arr, R, scale, t) for name, arr in j2_resampled.items()}
+    return {
+        "lag": lag, "mean_residual": mean_residual, "R": R, "scale": scale, "t": t,
+        "j1_overlap": j1_overlap, "j2_aligned": j2_aligned, "time_overlap": time_overlap,
+    }
+
+
+def fuse_trial(trial: str, fps1: float, fps2: float) -> dict:
+    j1, t1, up1 = load_view_joints(trial, "view1", fps1)
+    j2, t2, up2 = load_view_joints(trial, "view2", fps2)
+
+    v1 = vertical_component(j1, up1)
+    v2 = vertical_component(j2, up2)
+
+    # Try every strong correlation-peak candidate against the real spatial
+    # fit and keep whichever minimizes the residual, rather than trusting
+    # the strongest correlation peak alone -- confirmed on real data that
+    # the strongest peak can be a cycle-slip (see
+    # align.cross_correlate_lag_candidates's docstring for how this was found).
+    candidates = cross_correlate_lag_candidates(t1, v1, t2, v2)
+    fits = [_rigid_fit_at_lag(lag, j1, t1, j2, t2) for lag, _ in candidates]
+    best = min(fits, key=lambda f: f["mean_residual"])
+    if best["lag"] != candidates[0][0]:
+        strongest_residual = next(f["mean_residual"] for f in fits if f["lag"] == candidates[0][0])
+        print(f"    NOTE: strongest correlation peak (lag={candidates[0][0]:.2f}s) gave a worse fit "
+              f"than lag={best['lag']:.2f}s ({best['mean_residual']:.3f} vs {strongest_residual:.3f}) "
+              f"-- picked the lower-residual lag instead")
+
+    lag = best["lag"]
+    R, scale, t = best["R"], best["scale"], best["t"]
+    j1_overlap = best["j1_overlap"]
+    j2_aligned = best["j2_aligned"]
+    time_overlap = best["time_overlap"]
 
     n_frames = len(time_overlap)
     fused = {name: np.full((n_frames, 3), np.nan) for name in CANONICAL_JOINTS}

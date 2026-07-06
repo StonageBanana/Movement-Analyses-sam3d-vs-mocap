@@ -17,7 +17,7 @@ from pathlib import Path
 import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from align import umeyama_alignment, apply_similarity, cross_correlate_lag, resample_joints_to_times
+from align import umeyama_alignment, apply_similarity, cross_correlate_lag_candidates, resample_joints_to_times
 from joint_mapping import CANONICAL_JOINTS, detect_vertical_axis_generic
 
 ANALYSIS_DIR = Path(__file__).resolve().parent.parent
@@ -50,19 +50,8 @@ def vertical_component(joints: dict, up_axis: np.ndarray) -> np.ndarray:
     return mean_pos @ up_axis
 
 
-def align_trial(trial: str) -> dict:
-    mocap_joints, mocap_time = load_mocap_joints(trial)
-    fused_joints, fused_time = load_fused_joints(trial)
-
-    mocap_up = np.array([0.0, 1.0, 0.0])  # mocap .trc is Y-up (confirmed in Phase 1)
-    fused_up = detect_vertical_axis_generic(fused_joints["head"], fused_joints["toe_left"])
-
-    mocap_vert = vertical_component(mocap_joints, mocap_up)
-    fused_vert = vertical_component(fused_joints, fused_up)
-
-    lag = cross_correlate_lag(mocap_time, mocap_vert, fused_time, fused_vert)
+def _fit_at_lag(lag: float, mocap_joints: dict, mocap_time, fused_joints: dict, fused_time) -> dict:
     fused_time_shifted = fused_time + lag
-
     fused_resampled, valid_mask = resample_joints_to_times(fused_time_shifted, fused_joints, mocap_time)
     mocap_overlap = {name: arr[valid_mask] for name, arr in mocap_joints.items()}
 
@@ -92,6 +81,31 @@ def align_trial(trial: str) -> dict:
         "median_residual_mm": float(np.nanmedian(residuals)),
         "n_overlap_frames": int(valid_mask.sum()),
     }
+
+
+def align_trial(trial: str) -> dict:
+    mocap_joints, mocap_time = load_mocap_joints(trial)
+    fused_joints, fused_time = load_fused_joints(trial)
+
+    mocap_up = np.array([0.0, 1.0, 0.0])  # mocap .trc is Y-up (confirmed in Phase 1)
+    fused_up = detect_vertical_axis_generic(fused_joints["head"], fused_joints["toe_left"])
+
+    mocap_vert = vertical_component(mocap_joints, mocap_up)
+    fused_vert = vertical_component(fused_joints, fused_up)
+
+    # Try every strong correlation-peak candidate against the real spatial
+    # fit and keep whichever minimizes the residual, rather than trusting
+    # the strongest correlation peak alone (see
+    # align.cross_correlate_lag_candidates's docstring for why).
+    candidates = cross_correlate_lag_candidates(mocap_time, mocap_vert, fused_time, fused_vert)
+    results = [_fit_at_lag(lag, mocap_joints, mocap_time, fused_joints, fused_time) for lag, _ in candidates]
+    best = min(results, key=lambda r: r["mean_residual_mm"])
+    if best["lag_seconds"] != candidates[0][0]:
+        strongest = next(r["mean_residual_mm"] for r in results if r["lag_seconds"] == candidates[0][0])
+        print(f"    NOTE: strongest correlation peak (lag={candidates[0][0]:.2f}s) gave a worse fit "
+              f"than lag={best['lag_seconds']:.2f}s ({best['mean_residual_mm']:.0f}mm vs {strongest:.0f}mm) "
+              f"-- picked the lower-residual lag instead")
+    return best
 
 
 def main():

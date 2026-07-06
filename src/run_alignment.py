@@ -13,7 +13,7 @@ import numpy as np
 from scipy.signal import savgol_filter
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from align import umeyama_alignment, apply_similarity, cross_correlate_lag, resample_joints_to_times
+from align import umeyama_alignment, apply_similarity, cross_correlate_lag_candidates, resample_joints_to_times
 from joint_mapping import CANONICAL_JOINTS, sam3d_canonical_joints, detect_vertical_axis_generic
 
 SAM3D_REPO = Path(__file__).resolve().parent.parent / "third_party" / "sam-3d-body"
@@ -68,19 +68,8 @@ def vertical_component(joints: dict, up_axis: np.ndarray) -> np.ndarray:
     return mean_pos @ up_axis
 
 
-def align_trial_view(trial: str, view: str, video_fps: float) -> dict:
-    mocap_joints, mocap_time = load_mocap_joints(trial)
-    sam3d_joints, sam3d_time = load_sam3d_joints(trial, view, video_fps)
-
-    mocap_up = np.array([0.0, 1.0, 0.0])  # mocap .trc is Y-up (confirmed in Phase 1)
-    sam3d_up = detect_vertical_axis_generic(sam3d_joints["head"], sam3d_joints["toe_left"])
-
-    mocap_vert = vertical_component(mocap_joints, mocap_up)
-    sam3d_vert = vertical_component(sam3d_joints, sam3d_up)
-
-    lag = cross_correlate_lag(mocap_time, mocap_vert, sam3d_time, sam3d_vert)
+def _fit_at_lag(lag: float, mocap_joints: dict, mocap_time, sam3d_joints: dict, sam3d_time) -> dict:
     sam3d_time_shifted = sam3d_time + lag
-
     sam3d_resampled, valid_mask = resample_joints_to_times(sam3d_time_shifted, sam3d_joints, mocap_time)
     mocap_overlap = {name: arr[valid_mask] for name, arr in mocap_joints.items()}
 
@@ -110,6 +99,32 @@ def align_trial_view(trial: str, view: str, video_fps: float) -> dict:
         "median_residual_mm": float(np.nanmedian(residuals)),
         "n_overlap_frames": int(valid_mask.sum()),
     }
+
+
+def align_trial_view(trial: str, view: str, video_fps: float) -> dict:
+    mocap_joints, mocap_time = load_mocap_joints(trial)
+    sam3d_joints, sam3d_time = load_sam3d_joints(trial, view, video_fps)
+
+    mocap_up = np.array([0.0, 1.0, 0.0])  # mocap .trc is Y-up (confirmed in Phase 1)
+    sam3d_up = detect_vertical_axis_generic(sam3d_joints["head"], sam3d_joints["toe_left"])
+
+    mocap_vert = vertical_component(mocap_joints, mocap_up)
+    sam3d_vert = vertical_component(sam3d_joints, sam3d_up)
+
+    # Try every strong correlation-peak candidate against the real spatial
+    # fit and keep whichever minimizes the residual, rather than trusting
+    # the strongest correlation peak alone -- confirmed on real data that
+    # the strongest peak can be a cycle-slip (see
+    # align.cross_correlate_lag_candidates's docstring for how this was found).
+    candidates = cross_correlate_lag_candidates(mocap_time, mocap_vert, sam3d_time, sam3d_vert)
+    results = [_fit_at_lag(lag, mocap_joints, mocap_time, sam3d_joints, sam3d_time) for lag, _ in candidates]
+    best = min(results, key=lambda r: r["mean_residual_mm"])
+    if best["lag_seconds"] != candidates[0][0]:
+        print(f"    NOTE: strongest correlation peak (lag={candidates[0][0]:.2f}s) gave a worse fit "
+              f"than lag={best['lag_seconds']:.2f}s ({best['mean_residual_mm']:.0f}mm vs "
+              f"{[r['mean_residual_mm'] for r in results if r['lag_seconds'] == candidates[0][0]][0]:.0f}mm) "
+              f"-- picked the lower-residual lag instead")
+    return best
 
 
 def main():
