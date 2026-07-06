@@ -4,3 +4,4 @@ output/sam3d_run.log
 output/smoke_test/
 __pycache__/
 *.pyc
+output/overlay/
