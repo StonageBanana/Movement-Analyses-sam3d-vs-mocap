@@ -147,14 +147,30 @@ def joint_only_pelvis_frame(hip_left: np.ndarray, hip_right: np.ndarray, up: np.
     return x_hat, z_hat
 
 
-def compute_joint_angles_from_joints(joints: dict, up: np.ndarray) -> dict:
+def compute_joint_angles_from_joints(joints: dict, up: np.ndarray, frame_joints: dict = None) -> dict:
     """Same sagittal hip/knee/ankle flexion-extension angles as
     `compute_joint_angles`, but derived purely from canonical joint centers
     -- works identically for mocap's joints and SAM 3D Body's canonical
     joints (see `joint_only_pelvis_frame`), so Phase 4 can compare the two
     sides using one shared angle definition instead of Phase 1's
-    marker-only one."""
-    x_hat, z_hat = joint_only_pelvis_frame(joints["hip_left"], joints["hip_right"], up)
+    marker-only one.
+
+    `frame_joints`: optional dict supplying hip_left/hip_right used only to
+    derive the pelvis reference frame (x_hat/z_hat), instead of `joints`'
+    own. SAM 3D Body's own hip_left-hip_right vector is a fixed, ~44%-width,
+    ~106-degree-misoriented distortion of the true pelvis axis in this
+    dataset (confirmed identical before vs. after Phase 3/5's alignment, and
+    consistent across all 10 trials regardless of activity -- see project
+    notes), which corrupts every hip/knee/ankle flexion angle even though
+    the underlying thigh/shank/foot vectors (computed from `joints`, not
+    `frame_joints`) are largely fine. Passing mocap's joints here for the
+    SAM3D/fused side re-projects those vectors onto mocap's own, correctly-
+    oriented axis and recovers the correlation with mocap (e.g.
+    hip_flexion_right: r=-0.87 -> +0.85 on a validation trial). Defaults to
+    `joints` itself, preserving the original (mocap-vs-mocap, or any other
+    self-consistent) behavior."""
+    frame_source = frame_joints if frame_joints is not None else joints
+    x_hat, z_hat = joint_only_pelvis_frame(frame_source["hip_left"], frame_source["hip_right"], up)
 
     angles = {}
     for side in ("left", "right"):

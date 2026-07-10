@@ -110,7 +110,9 @@ def fig_phase5_skeleton_overlay(trial: str = "squats_1"):
     ax.set_xlabel("X (mm)")
     ax.set_ylabel("Y / up (mm)")
     ax.set_aspect("equal")
-    ax.invert_yaxis()
+    # No invert_yaxis(): mocap's Y is genuinely up (head has the largest Y,
+    # feet the smallest), so matplotlib's default orientation already puts
+    # feet at the bottom -- inverting was flipping the skeleton upside down.
     ax.legend(loc="upper right", fontsize=9)
     ax.set_title(f"{trial}: view1 vs view2 vs fused vs mocap, deepest-squat frame\n"
                  f"(t~{target_time:.2f}s, mocap clock)")

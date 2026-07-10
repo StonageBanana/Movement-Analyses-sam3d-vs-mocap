@@ -37,7 +37,11 @@ def process_trial(trial: str, static_offsets: dict) -> dict:
     pa_errs = pa_mpjpe_per_frame(aligned, mocap)
 
     mocap_angles_raw = compute_joint_angles_from_joints(mocap, MOCAP_UP)
-    fused_angles_raw = compute_joint_angles_from_joints(aligned, MOCAP_UP)
+    # frame_joints=mocap: see mocap.angles.compute_joint_angles_from_joints
+    # docstring and compare_metrics.process_trial_view -- the fused
+    # skeleton's own pelvis axis is systematically misoriented, so project
+    # its thigh/shank/foot vectors onto mocap's frame instead.
+    fused_angles_raw = compute_joint_angles_from_joints(aligned, MOCAP_UP, frame_joints=mocap)
     mocap_unreliable = set(mocap_angles_raw.pop("_unreliable"))
     fused_unreliable = set(fused_angles_raw.pop("_unreliable"))
 

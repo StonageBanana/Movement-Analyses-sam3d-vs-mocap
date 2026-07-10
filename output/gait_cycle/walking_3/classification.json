@@ -1,0 +1,127 @@
+{
+  "hip_flexion_left": {
+    "pearson_r": -0.7105586458295315,
+    "classification": "does not follow the curve",
+    "n_cycles": 40
+  },
+  "hip_flexion_right": {
+    "pearson_r": -0.9834230848266902,
+    "classification": "does not follow the curve",
+    "n_cycles": 40
+  },
+  "knee_flexion_left": {
+    "pearson_r": -0.7899899077276954,
+    "classification": "does not follow the curve",
+    "n_cycles": 40
+  },
+  "knee_flexion_right": {
+    "pearson_r": -0.8196326163211327,
+    "classification": "does not follow the curve",
+    "n_cycles": 40
+  },
+  "ankle_flexion_left": {
+    "pearson_r": 0.8102865749501372,
+    "classification": "accurately follows the curve",
+    "n_cycles": 40
+  },
+  "ankle_flexion_right": {
+    "pearson_r": -0.1849336095123852,
+    "classification": "does not follow the curve",
+    "n_cycles": 40
+  },
+  "pelvis": {
+    "pearson_r": NaN,
+    "classification": "insufficient data",
+    "n_cycles": 40
+  },
+  "neck": {
+    "pearson_r": -0.10392399457448384,
+    "classification": "does not follow the curve",
+    "n_cycles": 40
+  },
+  "head": {
+    "pearson_r": 0.6719197031518743,
+    "classification": "partially follows the curve",
+    "n_cycles": 40
+  },
+  "hip_left": {
+    "pearson_r": -0.5003547949076164,
+    "classification": "does not follow the curve",
+    "n_cycles": 40
+  },
+  "hip_right": {
+    "pearson_r": -0.5007662612669125,
+    "classification": "does not follow the curve",
+    "n_cycles": 40
+  },
+  "knee_left": {
+    "pearson_r": 0.740471745906091,
+    "classification": "accurately follows the curve",
+    "n_cycles": 40
+  },
+  "knee_right": {
+    "pearson_r": 0.7829895398649636,
+    "classification": "accurately follows the curve",
+    "n_cycles": 40
+  },
+  "ankle_left": {
+    "pearson_r": 0.8925211543447624,
+    "classification": "accurately follows the curve",
+    "n_cycles": 40
+  },
+  "ankle_right": {
+    "pearson_r": 0.8978758048802212,
+    "classification": "accurately follows the curve",
+    "n_cycles": 40
+  },
+  "heel_left": {
+    "pearson_r": 0.8674360935762719,
+    "classification": "accurately follows the curve",
+    "n_cycles": 40
+  },
+  "heel_right": {
+    "pearson_r": 0.8671103249148097,
+    "classification": "accurately follows the curve",
+    "n_cycles": 40
+  },
+  "toe_left": {
+    "pearson_r": 0.7271208337519822,
+    "classification": "accurately follows the curve",
+    "n_cycles": 40
+  },
+  "toe_right": {
+    "pearson_r": 0.6754450832397803,
+    "classification": "partially follows the curve",
+    "n_cycles": 40
+  },
+  "shoulder_left": {
+    "pearson_r": 0.860235632722653,
+    "classification": "accurately follows the curve",
+    "n_cycles": 40
+  },
+  "shoulder_right": {
+    "pearson_r": 0.8303883977221813,
+    "classification": "accurately follows the curve",
+    "n_cycles": 40
+  },
+  "elbow_left": {
+    "pearson_r": 0.6638418328762735,
+    "classification": "partially follows the curve",
+    "n_cycles": 40
+  },
+  "elbow_right": {
+    "pearson_r": 0.6829420483292389,
+    "classification": "partially follows the curve",
+    "n_cycles": 40
+  },
+  "wrist_left": {
+    "pearson_r": 0.9155963756237793,
+    "classification": "accurately follows the curve",
+    "n_cycles": 40
+  },
+  "wrist_right": {
+    "pearson_r": 0.859507643469495,
+    "classification": "accurately follows the curve",
+    "n_cycles": 40
+  }
+}

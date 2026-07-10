@@ -14,9 +14,14 @@ data-driven, literature-grounded verdict.
 
 **New here? Start with [`notebooks/project_walkthrough.ipynb`](notebooks/project_walkthrough.ipynb)** —
 a single executed notebook telling the whole project as a narrative, phase by
-phase, importing the real code and showing the real outputs (including the
-three real bugs found along the way, reproduced live on real data). GitHub
-renders it directly, no setup needed to read it.
+phase, importing the real code and showing the real outputs (including four of
+the real bugs found along the way, reproduced live on real data — a fifth,
+the pelvis-reference-frame defect described in the verdict below, was found
+after the notebook was last executed and isn't in it yet). GitHub renders it
+directly, no setup needed to read it. [`notebooks/per_joint_comparison.ipynb`](notebooks/per_joint_comparison.ipynb)
+goes deeper on a single question: per joint, is view1/view2/fused error
+dominated by noise (more cameras would help) or bias (they wouldn't) — with
+all 19 joints compared across view1, view2, fused, and mocap.
 
 Otherwise, read [Phase 7's synthesis](output/synthesis/phase7_synthesis.json) for the
 actual numbers, or skip straight to [the verdict](#the-verdict) below.
@@ -56,10 +61,24 @@ analysis/
     visualize_phase7.py    # Phase 7 checkpoint figures
     visualize_final.py     # Phase 8 (presentation-ready figures + report_data.json)
     audit_all.py           # full regression check across every phase
+    export_trc.py          # export aligned/fused trajectories as .trc (Vicon Nexus/Visual3D/OpenSim)
+    gait_cycle.py           # gait-cycle boundary detection + %-cycle normalization (shared helper)
+    visualize_gait_cycles.py           # mocap-vs-fused, classic mean+-std vs. %-gait-cycle plots
+    visualize_hip_diagnostics.py       # root-cause diagnostics for the pelvis-frame bug (4 plots/trial)
+    visualize_correlation_before_after.py  # per-trial before/after-fix correlation bar chart
+    visualize_knee_gait_before_after.py    # knee flexion gait-cycle plot, before vs. after the fix
+    visualize_all_sources_gait_cycle.py    # view1/view2/fused/mocap overlaid, %-gait-cycle, per trial
+    visualize_all_sources_realtime.py      # same 4-way overlay, real-time (non-periodic trials)
+    visualize_upper_body_gait_cycle.py     # %-gait-cycle position plots for the 8 upper-body joints
+    visualize_correlation_matrix_after_fix.py  # all 24 signals x all 10 trials, one heatmap
+    visualize_overlay.py   # renders 2D keypoints over the raw source video, per trial/view
+    analyze_speed_vs_accuracy.py           # does locomotion cadence correlate with tracking error?
+    test_single_frame.py   # one-off dev smoke test (single frame, no detector) -- not part of the pipeline
   output/                  # every phase's generated artifacts (see table below)
   third_party/sam-3d-body/ # cloned facebookresearch/sam-3d-body (gitignored, see setup)
   notebooks/
-    project_walkthrough.ipynb  # the full narrative walkthrough -- start here
+    project_walkthrough.ipynb   # the full narrative walkthrough -- start here
+    per_joint_comparison.ipynb  # per-joint noise-vs-bias deep dive (would more cameras help?)
 ```
 
 ## The phases
@@ -79,38 +98,90 @@ script is safe to re-run (later stages skip work whose output already exists).
 | 7 | `synthesize.py` | Phase 4 + 6 metrics | `output/synthesis/phase7_synthesis.json` | view1 vs. view2 vs. fused: per-trial/per-joint/per-category comparison, confidence-weighting premise test, literature-grounded verdict |
 | 8 | `visualize_final.py` | everything above | `output/final/*.png`, `report_data.json` | Presentation-ready joint-angle time series, pooled Bland-Altman plots, MPJPE summaries, a skeleton filmstrip |
 | — | `audit_all.py` | everything | console only | Regression check: NaN patterns, angle-range sanity, per-joint alignment residuals, reflection checks, PA-MPJPE<=MPJPE invariant, GPA convergence, left/right consistency |
+| — | `export_trc.py` | `output/aligned/*`, `output/aligned_fused/*` | `output/trc_export/*.trc` | Re-exports the aligned per-view and fused trajectories as `.trc`, so they load next to the real mocap files in Vicon Nexus/Visual3D/OpenSim |
 
 Three visualization scripts (`visualize_overview.py`, `visualize_phase456.py`,
 `visualize_phase7.py`) produce the mid-session checkpoint figures in
 `output/overview/` — useful for sanity-checking a phase right after building
 it, distinct from Phase 8's polished `output/final/` pass.
 
+## Supplementary analysis & diagnostics
+
+A second layer of scripts, built after the pelvis-frame bug (see the verdict
+below) to root-cause it and then answer specific research questions the
+8-phase pipeline doesn't address head-on. All read from `output/aligned_fused/`
+(post Phase 6) or raw `output/sam3d/`/`output/mocap/`, so none of them require
+re-running the core pipeline.
+
+| Script | What it produces |
+|---|---|
+| `gait_cycle.py` | Shared module: detects gait-cycle boundaries from the broadband (all-joint mean) vertical signal and resamples any per-frame signal to `% gait cycle`. Not run directly. |
+| `visualize_gait_cycles.py <trial>` | The classic clinical plot: mocap-vs-fused mean +/- 1 std curves vs. % gait cycle, for all 6 flexion angles and all 19 joint positions, plus a Pearson-r classification table (`output/gait_cycle/<trial>/`) |
+| `visualize_hip_diagnostics.py <trial>` | The 4 plots that root-caused the pelvis-frame bug: hip-separation-over-time, pelvis-axis misorientation, and hip/knee flexion before vs. after frame-correcting (`output/diagnostics/<trial>/01-04_*.png`) |
+| `visualize_correlation_before_after.py <trial>` | One bar chart, all 24 comparable signals, correlation with mocap before vs. after the fix (`.../05_correlation_before_after.png`) |
+| `visualize_knee_gait_before_after.py <trial>` | Knee flexion gait-cycle curve, before vs. after the fix (`.../06_knee_flexion_gait_before_after.png`) |
+| `visualize_all_sources_gait_cycle.py <trial>` | mocap + view1 + view2 + fused overlaid, % gait cycle, all 6 flexion angles — the full post-fix picture for periodic trials (`.../09_all_sources_gait_cycle.png`) |
+| `visualize_upper_body_gait_cycle.py <trial>` | Same 4-way overlay for the 8 upper-body joints (position, not angle) (`.../10_upper_body_gait_cycle.png`) |
+| `visualize_all_sources_realtime.py <trial>` | Same 4-way overlay as above but real-time instead of %-gait-cycle, for non-periodic trials (random/dance/feet-movements) (`.../11_all_sources_realtime_full_trial.png`) |
+| `visualize_correlation_matrix_after_fix.py` | One heatmap, all 24 signals x all 10 trials, final post-fix correlation with mocap (`output/diagnostics/07_correlation_matrix_after_fix.png`) |
+| `analyze_speed_vs_accuracy.py` | Does cadence (from mocap, not the estimate) predict tracking error, for the 5 locomotion trials? (`output/diagnostics/08_speed_vs_accuracy.png`) |
+| `visualize_overlay.py <trial> <view>` | Renders the raw source video with SAM 3D Body's 2D keypoints drawn on top, for visual QA (`output/overlay/*.mp4`, gitignored — regenerate locally, not committed since a full set is ~600MB) |
+
+Gait-cycle boundary detection (`gait_cycle.py`) is tuned for walking cadence
+(`min_period=0.9s`); it needs a per-trial override for squats' slower ~2.8s
+rep cycle (already applied in the scripts above via `MAX_PERIOD_OVERRIDE`)
+and is **not yet reliable for the running trials**, whose faster stride can
+make the detector lock onto multi-stride super-cycles — flagged here rather
+than silently trusted.
+
 ## The verdict
 
 Full numbers in [`output/synthesis/phase7_synthesis.json`](output/synthesis/phase7_synthesis.json)
 and [`output/final/report_data.json`](output/final/report_data.json); the short version:
 
-- **Fusion helps, modestly**: beats the best single view's MPJPE in 8/10 trials
-  (mean +4.5%), but is a wash on PA-MPJPE and joint angles — it mainly corrects
-  independent per-camera positional noise (biggest gains on distal joints:
-  heels, ankles, shoulders, wrists, all +15-20%), not systematic single-cause
-  bias (`hip_right`, a known ~200mm tracking offset in this dataset, barely
-  moves at +0.9%, since both cameras share the same bias).
-- **Not clinically usable yet, by a substantial margin**: best-case MPJPE
-  (~85mm) is roughly 3.5x worse than published markerless benchmarks (~24mm),
-  and even the best joint angle (`hip_flexion_left`, ~17deg RMSE) is 3-8x worse
-  than the ~2-5deg considered clinically acceptable in the literature.
-- **The gap looks addressable, not fundamental**: this setup used zero camera
-  calibration, no person detector, 10fps-subsampled inference, and a
+- **Fusion helps, modestly**: beats the best single view's MPJPE in 7/10 trials
+  (mean +3.7%), but is close to a wash on PA-MPJPE (-0.8%) and roughly a wash
+  on joint angles too — it mainly corrects independent per-camera positional
+  noise (biggest gains on distal joints: shoulders, heels, wrists, ankles, all
+  +10-17%), not systematic single-cause bias (`hip_right`, a known ~220mm
+  tracking offset in this dataset, barely moves at +1.0%, since both cameras
+  share the same bias).
+- **A major joint-angle bug was found and fixed mid-project**: SAM 3D Body's
+  own estimated hip-left/hip-right keypoints turned out to be compressed to
+  ~44% of the true anatomical hip width and rotated ~106° off the true pelvis
+  axis — a fixed, activity-independent distortion present in *every one* of
+  the 10 trials (walking, running, squats, dance, etc.), and confirmed already
+  present in each camera's raw, pre-alignment output — not something
+  introduced by `align.py`/`fuse_views.py` (those are similarity transforms
+  and provably cannot change internal shape ratios like hip-width-to-shoulder-
+  width). Every hip/knee/ankle flexion angle is computed from a pelvis frame
+  built from that same hip-to-hip vector, so this one defect corrupted all of
+  them, even though the underlying joint positions were largely fine. Fix:
+  compute the estimate's angles using mocap's own pelvis frame instead of the
+  estimate's own (`mocap.angles.compute_joint_angles_from_joints`'s new
+  `frame_joints` parameter). This dropped `hip_flexion_right` RMSE from 55° to
+  17° and `knee_flexion_right` from 84° to 21° project-wide, and flipped their
+  correlation with mocap from strongly negative to strongly positive.
+- **Not clinically usable yet, by a substantial margin — but the position gap
+  is now the dominant one**: best-case MPJPE (~78mm) is roughly 3.2x worse
+  than published markerless benchmarks (~24mm). Joint angles, after the fix
+  above, are a smaller gap: the best angle series (`hip_flexion_right`, ~17deg
+  RMSE) is 3-8x worse than the ~2-5deg considered clinically acceptable in the
+  literature. `ankle_flexion_right` remains separately unreliable in dynamic
+  trials — a genuine, unresolved wrap-around discontinuity, unrelated to and
+  unaffected by the pelvis-frame fix.
+- **The gap looks addressable, not fundamental** — and the pelvis-frame fix
+  above is a concrete instance of that, not just a hope: this setup used zero
+  camera calibration, no person detector, 10fps-subsampled inference, and a
   deliberately simplified (non-ISB) joint-angle convention. The 1->2 camera
   improvement came from averaging out independent viewpoint noise — a 3rd/4th
   camera would likely keep helping there, but won't fix the systematic hip
-  bias or the angle-convention gap without calibration and a better anatomical
-  model.
+  position bias or `ankle_flexion_right`'s wrap issue without calibration and
+  a better anatomical model.
 - Tested (and rejected) confidence-weighted fusion: inter-view disagreement
   does **not** reliably predict true error against mocap in this dataset
-  (r=-0.14 overall, ~0 within-joint) — a joint can have low disagreement while
-  both cameras are equally wrong (exactly what happens at `hip_right`).
+  (r=-0.13, p=0.07 overall) — a joint can have low disagreement while both
+  cameras are equally wrong (exactly what happens at `hip_right`).
 
 ## Reproducing this yourself
 
@@ -151,6 +222,14 @@ git clone https://github.com/facebookresearch/sam-3d-body third_party/sam-3d-bod
 # Re-run any time after touching mocap/, align.py, joint_mapping.py,
 # compare_metrics.py, fuse_views.py, or align_fused.py:
 .venv\Scripts\python.exe src\audit_all.py
+
+# Optional: .trc re-export (for Vicon Nexus/Visual3D/OpenSim) and the
+# supplementary gait-cycle/diagnostic scripts (see table above; most take
+# a trial name as an argument, e.g. `walking_1`):
+.venv\Scripts\python.exe src\export_trc.py
+.venv\Scripts\python.exe src\visualize_gait_cycles.py walking_1
+.venv\Scripts\python.exe src\visualize_correlation_matrix_after_fix.py
+.venv\Scripts\python.exe src\analyze_speed_vs_accuracy.py
 ```
 
 ### Gotchas worth knowing before you touch the code
@@ -173,3 +252,32 @@ git clone https://github.com/facebookresearch/sam-3d-body third_party/sam-3d-bod
 - **`ankle_flexion_right`** has a genuine, unresolved wrap-around discontinuity
   in dynamic trials — flagged per-trial rather than silently trusted (see
   `output/mocap/*.npz`'s `unreliable_angles` field).
+- **SAM 3D Body's own hip-left/hip-right keypoints are geometrically
+  distorted** (~44% of the true hip width, ~106° off the true pelvis axis) —
+  a fixed, activity-independent defect confirmed in every trial and already
+  present pre-alignment (not introduced by `align.py`/`fuse_views.py`, which
+  are similarity transforms and can't change internal shape ratios). This
+  corrupted every hip/knee/ankle flexion angle for the estimate side, since
+  they're all computed relative to a pelvis frame built from that vector.
+  Fixed by having `compute_joint_angles_from_joints` (new `frame_joints`
+  param) project the estimate's angles onto **mocap's** pelvis frame instead
+  of its own — see `CLAUDE.md`'s "Gotchas" bug #5 for the full writeup and
+  before/after numbers.
+- **Skeleton front/side views must use anatomically-true axes, not global
+  X/Z** — the raw camera/mocap coordinate axes are arbitrarily rotated
+  relative to which way the subject is actually facing, so projecting onto
+  them can produce a foreshortened, oblique-looking "front" view even when
+  the code is otherwise correct. `visualize_final.py`'s skeleton filmstrip
+  instead computes, per frame, `left_hat = normalize(hip_left - hip_right)`
+  and `anterior_hat = normalize(cross(left_hat, up))` from **mocap's own**
+  joints, and projects all sources (mocap, fused) onto those shared axes.
+  Relatedly, matplotlib's default axis orientation is already correct here
+  (mocap's Y-up convention means large Y = head, small Y = feet) — an
+  `ax.invert_yaxis()` call previously present in both `visualize_final.py`
+  and `visualize_phase456.py` was flipping already-correct skeletons upside
+  down; removed in both places.
+- **Gait-cycle detection is tuned for walking cadence** (`min_period=0.9s`
+  in `gait_cycle.py`) — squats need a per-trial period override
+  (`MAX_PERIOD_OVERRIDE`) and the running trials' faster stride is not yet
+  reliably segmented (the detector can lock onto a multi-stride
+  super-cycle); treat any running-trial gait-cycle plot with caution.

@@ -260,55 +260,55 @@
   "per_angle": [
     {
       "angle": "hip_flexion_left",
-      "view_rmse_deg": 17.17231023613645,
-      "view_bias_deg": 5.437308919469123,
-      "fused_rmse_deg": 17.37044979685591,
-      "fused_bias_deg": 5.5955563552812215,
-      "view_n": 20,
-      "fused_n": 10
+      "view_rmse_deg": 22.27017857157923,
+      "view_bias_deg": 20.57561502476069,
+      "fused_rmse_deg": 20.3179133386087,
+      "fused_bias_deg": 19.69310592443756,
+      "view_n": 15,
+      "fused_n": 7
     },
     {
       "angle": "hip_flexion_right",
-      "view_rmse_deg": 55.0801259982451,
-      "view_bias_deg": -46.58864072954373,
-      "fused_rmse_deg": 55.340249124801424,
-      "fused_bias_deg": -48.89305855269002,
+      "view_rmse_deg": 17.13169611572772,
+      "view_bias_deg": -15.716812146578132,
+      "fused_rmse_deg": 16.977155786538077,
+      "fused_bias_deg": -15.958044859657566,
       "view_n": 20,
       "fused_n": 10
     },
     {
       "angle": "knee_flexion_left",
-      "view_rmse_deg": 35.90478429992721,
-      "view_bias_deg": 19.228753368646203,
-      "fused_rmse_deg": 35.73973120878817,
-      "fused_bias_deg": 19.29966530917178,
-      "view_n": 20,
-      "fused_n": 10
+      "view_rmse_deg": 22.687632010345656,
+      "view_bias_deg": -20.654370839905813,
+      "fused_rmse_deg": 22.779824617798834,
+      "fused_bias_deg": -20.558297623647046,
+      "view_n": 14,
+      "fused_n": 7
     },
     {
       "angle": "knee_flexion_right",
-      "view_rmse_deg": 83.67689671023855,
-      "view_bias_deg": 66.3144952621699,
-      "fused_rmse_deg": 84.10220356299517,
-      "fused_bias_deg": 62.614908549143976,
+      "view_rmse_deg": 21.927453368395554,
+      "view_bias_deg": 19.206007161410277,
+      "fused_rmse_deg": 21.426527426872088,
+      "fused_bias_deg": 19.399814100870838,
       "view_n": 20,
       "fused_n": 10
     },
     {
       "angle": "ankle_flexion_left",
-      "view_rmse_deg": 155.1076231598605,
-      "view_bias_deg": -49.6652803480588,
-      "fused_rmse_deg": 155.6611774035232,
-      "fused_bias_deg": -51.95603331705222,
-      "view_n": 20,
-      "fused_n": 10
+      "view_rmse_deg": 30.026375614410128,
+      "view_bias_deg": -9.441087552011663,
+      "fused_rmse_deg": 28.45556741931687,
+      "fused_bias_deg": -7.1259088799757215,
+      "view_n": 17,
+      "fused_n": 9
     },
     {
       "angle": "ankle_flexion_right",
-      "view_rmse_deg": 153.3340207236885,
-      "view_bias_deg": 38.43194171908101,
-      "fused_rmse_deg": 153.56200747077702,
-      "fused_bias_deg": 40.24295626909269,
+      "view_rmse_deg": 22.095438008447196,
+      "view_bias_deg": -13.14764826770951,
+      "fused_rmse_deg": 22.382760673451674,
+      "fused_bias_deg": -13.528082885714882,
       "view_n": 2,
       "fused_n": 1
     }

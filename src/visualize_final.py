@@ -29,6 +29,7 @@ import numpy as np
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from joint_mapping import CANONICAL_JOINTS
 from mocap.angles import compute_joint_angles_from_joints, wrap_around_center
+from mocap.joints import _normalize
 from compare_metrics import ANGLE_NAMES, MOCAP_UP, load_static_angle_offsets
 
 ANALYSIS_DIR = Path(__file__).resolve().parent.parent
@@ -69,7 +70,11 @@ def angle_series(trial: str, condition: str, static_offsets: dict) -> dict:
     mocap = {j: d[f"mocap__{j}"] for j in CANONICAL_JOINTS}
     est = {j: d[f"aligned__{j}"] for j in CANONICAL_JOINTS}
     mocap_angles = compute_joint_angles_from_joints(mocap, MOCAP_UP)
-    est_angles = compute_joint_angles_from_joints(est, MOCAP_UP)
+    # frame_joints=mocap: the estimate's own pelvis axis is systematically
+    # misoriented (see mocap.angles.compute_joint_angles_from_joints and
+    # compare_metrics.process_trial_view) -- project its thigh/shank/foot
+    # vectors onto mocap's frame instead, matching Phase 4/6's metrics.
+    est_angles = compute_joint_angles_from_joints(est, MOCAP_UP, frame_joints=mocap)
     mocap_unreliable = set(mocap_angles.pop("_unreliable"))
     est_unreliable = set(est_angles.pop("_unreliable"))
     time = d["mocap_time_overlap"]
@@ -206,41 +211,95 @@ def fig_mpjpe_summary(phase4: dict, phase6: dict):
     print(f"Saved {out}")
 
 
-def _skeleton(ax, joints: dict, frame_idx: int, color: str, alpha: float = 1.0):
+def _skeleton(ax, joints: dict, frame_idx: int, color: str, alpha: float = 1.0,
+              axes_idx=(0, 1), horiz_vec=None):
+    """axes_idx: which two of the three (X, Y, Z) *global* coordinates to
+    plot, as (horizontal, vertical) -- ignored if `horiz_vec` is given.
+
+    horiz_vec: an explicit 3D unit vector to project onto for the horizontal
+    axis instead of a raw global X or Z component (vertical stays global Y,
+    since "up" doesn't rotate with the subject on a level treadmill). Used
+    for anatomically-true front/side views -- see fig_skeleton_filmstrip.
+    Global-axis views ((0,1) or (2,1)) are foreshortened/oblique whenever the
+    subject's true facing direction isn't aligned with the mocap
+    calibration's X/Z axes, which it has no reason to be (calibration axes
+    are fixed to the lab, not to wherever the treadmill was placed inside
+    it) -- confirmed here: mocap's hip_left/hip_right differ by only
+    ~10-90mm in raw X but ~150-470mm in raw Z, so the raw-X "front view"
+    was a near-edge-on sliver of the real hip separation, making the pelvis
+    triangle appear to twist as it swayed."""
     for a, b in CANON_LINKS:
         pa, pb = joints[a][frame_idx], joints[b][frame_idx]
         if np.isnan(pa).any() or np.isnan(pb).any():
             continue
-        ax.plot([pa[0], pb[0]], [pa[1], pb[1]], "-", color=color, linewidth=1.5, alpha=alpha)
+        if horiz_vec is not None:
+            xa, xb = float(np.dot(pa, horiz_vec)), float(np.dot(pb, horiz_vec))
+        else:
+            h, _ = axes_idx
+            xa, xb = pa[h], pb[h]
+        ax.plot([xa, xb], [pa[1], pb[1]], "-", color=color, linewidth=1.5, alpha=alpha)
 
 
 def fig_skeleton_filmstrip(trial: str = "squats_1", n_frames: int = 5, cycle_window=(1.5, 4.6)):
     """cycle_window: (start, end) seconds on mocap's clock spanning one full
     standing->deep-squat->standing cycle -- for squats_1 specifically,
     confirmed against its own pelvis-height trajectory (standing ~1035mm at
-    t=1.5s, deepest ~598mm at t=3.6s, back to standing ~1040mm by t=4.6s)."""
+    t=1.5s, deepest ~598mm at t=3.6s, back to standing ~1040mm by t=4.6s).
+
+    Two rows, both anatomically-true views (not raw global-axis views) and
+    both in the same (correct) head-up/feet-down orientation:
+    - Front view: horizontal axis = the subject's own instantaneous
+      mediolateral (hip-to-hip) direction, derived from *mocap's* hip_left
+      and hip_right each frame -- the same convention
+      mocap.angles.joint_only_pelvis_frame uses elsewhere in this project.
+    - Side view: horizontal axis = the anterior direction perpendicular to
+      that, i.e. cross(mediolateral, up) -- what actually looks like
+      "walking"/"running" to the eye, since the stride's forward-back leg
+      swing lives in this direction.
+    Both mocap and fused are projected onto the *same*, mocap-derived axes
+    each frame, so the comparison stays apples-to-apples.
+
+    Raw global-axis views (plain X-Y / Z-Y) were tried first and dropped:
+    mocap's hip_left/hip_right differ by only ~10-90mm in raw X but
+    ~150-470mm in raw Z, meaning the mocap calibration's X/Z axes aren't
+    aligned with the subject's actual facing direction on the treadmill (no
+    reason they should be -- calibration axes are fixed to the lab, not to
+    wherever the treadmill was placed inside it). Projecting onto raw X gave
+    a near-edge-on sliver of the real hip separation, making the pelvis
+    triangle appear to twist as it swayed, and raw X also hid the stride
+    entirely (that motion was almost all in Z).
+
+    Neither row calls invert_yaxis(): mocap's Y is genuinely up (head has
+    the largest Y, feet the smallest), so matplotlib's default orientation
+    already puts feet at the bottom -- inverting was flipping the skeleton
+    upside down (a real bug, found and fixed this session)."""
     df = np.load(ALIGNED_FUSED_DIR / f"{trial}.npz")
     fused = {j: df[f"aligned__{j}"] for j in CANONICAL_JOINTS}
     mocap = {j: df[f"mocap__{j}"] for j in CANONICAL_JOINTS}
     t_overlap = df["mocap_time_overlap"]
     sample_times = np.linspace(cycle_window[0], cycle_window[1], n_frames)
 
-    fig, axes = plt.subplots(1, n_frames, figsize=(3.2 * n_frames, 5.5), sharey=True)
-    for ax, target_t in zip(axes, sample_times):
+    rows = ["Front view\nY / up (mm)", "Side view\nY / up (mm)"]
+    fig, axes = plt.subplots(len(rows), n_frames, figsize=(3.2 * n_frames, 10.3), sharey="row")
+    for col, target_t in enumerate(sample_times):
         idx = int(np.argmin(np.abs(t_overlap - target_t)))
-        _skeleton(ax, mocap, idx, "black")
-        _skeleton(ax, fused, idx, CONDITION_COLORS["fused"])
-        ax.set_aspect("equal")
-        ax.invert_yaxis()
-        ax.set_title(f"t={t_overlap[idx]:.2f}s")
-        ax.set_xticks([])
-    axes[0].set_ylabel("Y / up (mm)")
+        left_hat = _normalize(mocap["hip_left"][idx] - mocap["hip_right"][idx])
+        anterior_hat = _normalize(np.cross(left_hat, MOCAP_UP))
+        for row, horiz_vec in enumerate([left_hat, anterior_hat]):
+            ax = axes[row, col]
+            _skeleton(ax, mocap, idx, "black", horiz_vec=horiz_vec)
+            _skeleton(ax, fused, idx, CONDITION_COLORS["fused"], horiz_vec=horiz_vec)
+            ax.set_aspect("equal")
+            ax.set_xticks([])
+        axes[0, col].set_title(f"t={t_overlap[idx]:.2f}s")
+    for row, label in enumerate(rows):
+        axes[row, 0].set_ylabel(label, fontsize=11)
     fig.legend(
         handles=[plt.Line2D([], [], color="black", label="mocap"),
                  plt.Line2D([], [], color=CONDITION_COLORS["fused"], label="fused")],
-        loc="upper center", ncol=2, fontsize=10, bbox_to_anchor=(0.5, 1.06),
+        loc="upper center", ncol=2, fontsize=10, bbox_to_anchor=(0.5, 1.035),
     )
-    fig.suptitle(f"Phase 8: {trial} -- fused vs mocap across one squat cycle", y=1.15)
+    fig.suptitle(f"Phase 8: {trial} -- fused vs mocap across one movement cycle", y=1.06)
     plt.tight_layout()
     out = OUT_DIR / f"skeleton_filmstrip_{trial}.png"
     plt.savefig(out, dpi=120, bbox_inches="tight")

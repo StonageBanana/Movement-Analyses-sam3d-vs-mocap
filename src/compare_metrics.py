@@ -145,7 +145,12 @@ def process_trial_view(trial: str, view: str, static_offsets: dict) -> dict:
     pa_errs = pa_mpjpe_per_frame(aligned, mocap)
 
     mocap_angles_raw = compute_joint_angles_from_joints(mocap, MOCAP_UP)
-    sam3d_angles_raw = compute_joint_angles_from_joints(aligned, MOCAP_UP)
+    # frame_joints=mocap: SAM3D's own hip_left/hip_right vector is a fixed,
+    # ~44%-width, ~106deg-misoriented distortion of the true pelvis axis
+    # (see mocap.angles.compute_joint_angles_from_joints docstring) -- use
+    # mocap's own, correctly-oriented frame to project the estimate's
+    # thigh/shank/foot vectors instead of the estimate's own frame.
+    sam3d_angles_raw = compute_joint_angles_from_joints(aligned, MOCAP_UP, frame_joints=mocap)
     mocap_unreliable = set(mocap_angles_raw.pop("_unreliable"))
     sam3d_unreliable = set(sam3d_angles_raw.pop("_unreliable"))
 
